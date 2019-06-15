@@ -1,0 +1,62 @@
+#app {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+#app {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+#app:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Add some padding inside the card container */
+#root {
+  padding: 2px 16px;
+}
+
+#txttask {
+  padding: 12px 28px;
+}
+.btn {
+  border: none; /* Remove borders */
+  color: white; /* Add a text color */
+  padding: 14px 28px; /* Add some padding */
+  cursor: pointer; /* Add a pointer cursor on mouse-over */
+  margin-left: 5px;
+}
+
+/* table {
+  width: 100%;
+} */
+
+table {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 10px;
+  text-align: left;
+}
+table tr:nth-child(even) {
+  background-color: #eee;
+}
+table tr:nth-child(odd) {
+  background-color: #fff;
+}
+table th {
+  background-color: black;
+  color: white;
+}
