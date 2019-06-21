@@ -4,59 +4,80 @@ import ReactDOM from "react-dom";
 import "./styles.css";
 
 class App extends React.Component {
-  constructor(props) {
+  constructor(props){
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    this.textInput = React.createRef();
+
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
-    this.state = {
+    this.onChangeTaskName = this.onChangeTaskName.bind(this);
+    this.state={
       todo: [],
-      btnSubmitName: "Add"
+      task_name :'',
+      btnAdd:'Add'
     };
   }
 
-  handleReset(e) {
-    e.preventDefault();
-    document.getElementById("lblEdit").value = "";
-    document.getElementById("txttask").value = "";
+  componentDidMount() {
+    this.textInput.current.focus();
+  }
+
+  componentDidUpdate(){
+    this.textInput.current.focus();
+  }
+
+  onChangeTaskName(event){
     this.setState({
-      btnSubmitName: "Add"
+      task_name : event.target.value,
     });
   }
 
-  handleClick(e) {
-    e.preventDefault();
+  handleReset(event){
+    event.preventDefault();
+    document.getElementById("lblEdit").value = '';
+    this.setState({
+      task_name : '',
+      btnAdd :'Add',
+    });
+  }
+
+  handleSubmit(event){
+    event.preventDefault();
     if (
-      this.state.btnSubmitName === "Add" &&
-      document.getElementById("txttask").value !== ""
+      this.state.btnAdd === "Add" &&
+      this.state.task_name !== ""
     ) {
-      let a = this.state.todo.slice();
-      a.push(document.getElementById("txttask").value);
+      let currentArray = this.state.todo.slice();
+      currentArray.push(this.state.task_name);
       this.setState({
-        todo: a
+        todo: currentArray,
+        task_name : '',
+        btnAdd :'Add',
       });
     } else if (
-      this.state.btnSubmitName === "Update" &&
-      document.getElementById("txttask").value !== ""
+      this.state.btnAdd === "Update" &&
+      this.state.task_name !== ""
     ) {
       let editIndex = document.getElementById("lblEdit").value;
-      let a = this.state.todo.slice();
-      a[editIndex] = document.getElementById("txttask").value;
+      let currentArray = this.state.todo.slice();
+      currentArray[editIndex] = this.state.task_name;
       this.setState({
-        todo: a,
-        btnSubmitName: "Add"
+        todo: currentArray,
+        task_name : '',
+        btnAdd :'Add',
       });
     } else {
       alert("enter task");
     }
-    document.getElementById("txttask").value = "";
+    
   }
 
   handleEdit(e) {
     e.preventDefault();
-    document.getElementById("txttask").value = this.state.todo[e.target.value];
     document.getElementById("lblEdit").value = e.target.value;
     this.setState({
-      btnSubmitName: "Update"
+      task_name : this.state.todo[e.target.value],
+      btnAdd: "Update"
     });
   }
 
@@ -66,12 +87,13 @@ class App extends React.Component {
     a.splice(e.target.value, 1);
     this.setState({
       todo: a,
-      btnSubmitName: "Add"
+      task_name : '',
+      btnAdd: "Add"
     });
-    document.getElementById("txttask").value = "";
   }
 
-  render() {
+
+  render(){
     const renderList = this.state.todo.map((item, i) => (
       <tr key={i}>
         <td>{i + 1}</td>
@@ -96,26 +118,17 @@ class App extends React.Component {
         </td>
       </tr>
     ));
+
     return (
-      <div id="root">
+      <div className="App">
         <h1>Add Task</h1>
-        <input id="txttask" />
-        <button
-          id="btnSubmit"
-          className="btn"
-          style={{ backgroundColor: "#2196F3" }}
-          onClick={this.handleClick}
-        >
-          {this.state.btnSubmitName}
-        </button>
-        <button
-          id="btnReset"
-          style={{ backgroundColor: "#f44336" }}
-          className="btn"
-          onClick={this.handleReset}
-        >
-          Reset
-        </button>
+        <form id='form1' onSubmit={this.handleSubmit}>
+          <input id="txttask" ref={this.textInput} type='text' value={this.state.task_name} onChange={this.onChangeTaskName}></input>
+          <input id="btnSubmit" type='submit' value={this.state.btnAdd} className="btn"
+          style={{ backgroundColor: "#2196F3" }} ></input>
+          <input id="btnReset" type='reset' value='Reset' onClick={this.handleReset} className="btn"
+          style={{ backgroundColor: "#f44336" }}></input>
+        </form>
         <label id="lblEdit" />
         <br />
         <hr />
@@ -133,6 +146,8 @@ class App extends React.Component {
       </div>
     );
   }
+  
 }
 
-ReactDOM.render(<App />, document.getElementById("app"));
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
