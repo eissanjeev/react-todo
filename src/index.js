@@ -7,6 +7,7 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.textInput = React.createRef();
+    this.lblEdit = React.createRef();
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
@@ -20,6 +21,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.textInput.current.focus();
+    this.lblEdit.current.value = '';
   }
 
   componentDidUpdate(){
@@ -34,7 +36,7 @@ class App extends React.Component {
 
   handleReset(event){
     event.preventDefault();
-    document.getElementById("lblEdit").value = '';
+    this.lblEdit.current.value = '';
     this.setState({
       task_name : '',
       btnAdd :'Add',
@@ -58,7 +60,7 @@ class App extends React.Component {
       this.state.btnAdd === "Update" &&
       this.state.task_name !== ""
     ) {
-      let editIndex = document.getElementById("lblEdit").value;
+      let editIndex = this.lblEdit.current.value;
       let currentArray = this.state.todo.slice();
       currentArray[editIndex] = this.state.task_name;
       this.setState({
@@ -66,6 +68,7 @@ class App extends React.Component {
         task_name : '',
         btnAdd :'Add',
       });
+      this.lblEdit.current.value = '';
     } else {
       alert("enter task");
     }
@@ -74,11 +77,12 @@ class App extends React.Component {
 
   handleEdit(e) {
     e.preventDefault();
-    document.getElementById("lblEdit").value = e.target.value;
+    this.lblEdit.current.value = e.target.value;
     this.setState({
       task_name : this.state.todo[e.target.value],
       btnAdd: "Update"
     });
+    
   }
 
   handleDelete(e) {
@@ -129,7 +133,7 @@ class App extends React.Component {
           <input id="btnReset" type='reset' value='Reset' onClick={this.handleReset} className="btn"
           style={{ backgroundColor: "#f44336" }}></input>
         </form>
-        <label id="lblEdit" />
+        <label ref={this.lblEdit} />
         <br />
         <hr />
         <table style={{ border: "2px solid red" }}>
@@ -151,3 +155,4 @@ class App extends React.Component {
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
+
